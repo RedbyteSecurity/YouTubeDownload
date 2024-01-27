@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iK+eaW1TIq0v6sLHe+zjUGZK6dI8EFeFQFfBz66fe0188197" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-FJ+8Lb57FqNXLqOWPhh4Pd6WtFvlz8uVuR0L4eGg1BqI1gGgqlAwpj5cFeFim5C3" crossorigin="anonymous">
+    <title>YouTube Downloader</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('1.jpg');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            color: #333; /* Cor do texto */
+            animation: fadeIn 1s ease-in-out; /* Efeito de fadeIn */
+            transition: transform 0.3s ease-in-out; /* Efeito de transição ao passar o mouse */
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Adicionando sombra */
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #007bff; /* Cor do texto */
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::before {
+            content: 'Y';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #0056b3; /* Cor do efeito */
+            clip-path: polygon(0 0, 100% 0, 100% 50%, 0% 50%);
+            animation: glitch 1.5s infinite alternate;
+        }
+
+        h1::after {
+            content: 'Y';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #0056b3; /* Cor do efeito */
+            clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0% 100%);
+            animation: glitch 2s infinite alternate-reverse;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            25% {
+                transform: translate(-5px, 5px);
+            }
+            50% {
+                transform: translate(5px, -5px);
+            }
+            75% {
+                transform: translate(-5px, 5px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-weight: bold; /* Texto em negrito */
+            padding: 15px 30px; /* Aumentar o tamanho do botão */
+            font-size: 1.2em; /* Aumentar o tamanho do texto do botão */
+            outline: 2px solid #0056b3; /* Adicionar contorno ao botão */
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out; /* Efeito de transição na cor de fundo e escala ao passar o mouse */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: scale(1.1); /* Efeito de escala ao passar o mouse */
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+            position: relative;
+            animation: slideIn 1s ease-in-out; /* Efeito de slideIn */
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .loading-text {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        .progress-bar-container {
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 10px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .percentage {
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        /* Estilos específicos para a imagem de fundo */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+        }
+
+        /* Estilo para aumentar o tamanho dos campos de entrada */
+        .form-control {
+            width: 80%;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            font-weight: bold; /* Texto em negrito */
+            transition: width 0.3s ease-in-out; /* Efeito de transição ao passar o mouse */
+        }
+
+        /* Estilo para o botão de seleção de diretório */
+        .btn-directory {
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        /* Estilo para a seleção de diretório */
+        .directory-selection {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .directory-selection:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Imagem de fundo -->
+    
+
+    <div class="container">
+        <h1 class="mb-4">YouTube Downloader</h1>
+        <label for="url" class="form-label">URL do YouTube:</label>
+        <input type="text" class="form-control mb-3" id="url" placeholder="Cole o link aqui">
+        <select class="custom-select resolution-select mb-3" id="resolution">
+            <option value="1080p">1080p</option>
+            <option value="720p">720p</option>
+            <option value="480p">480p</option>
+            <option value="2k">2K</option>
+            <option value="4k">4K</option>
+        </select>
+        <button type="button" class="btn btn-directory" onclick="selectDirectory()">Selecionar Diretório</button>
+        <label class="form-label">(ou deixe em branco para usar o padrão)</label>
+        <label for="type" class="form-label">Tipo de Download:</label>
+        <select class="form-select mb-3" id="type">
+            <option value="mp3">MP3</option>
+            <option value="video">Vídeo</option>
+            <option value="music">Apenas Música</option>
+        </select>
+        <button type="button" class="btn btn-primary" onclick="download()"><i class="fas fa-download"></i> Baixar</button>
+
+        <!-- Diretório de seleção e informações de download -->
+        <div class="directory-selection" onclick="selectDirectory()">Diretório padrão: Videos</div>
+
+        <!-- Barra de Progresso Contínua com Mudança de Cor RGB -->
+        <div class="progress-container">
+            <div class="progress-bar-container">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="loading-text">Carregando...<span class="percentage">0%</span></div>
+        </div>
+    </div>
+
+    <script>
+        function download() {
+            let progressBar = document.querySelector('.progress-bar');
+            let progress = 0;
+
+            // Exibindo a barra de progresso
+            let progressContainer = document.querySelector('.progress-container');
+            progressContainer.style.display = 'block';
+
+            let interval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = `${progress}%`;
+                progressBar.setAttribute('aria-valuenow', progress);
+
+                // Mudança de cor RGB
+                let red = Math.floor(Math.random() * 256);
+                let green = Math.floor(Math.random() * 256);
+                let blue = Math.floor(Math.random() * 256);
+                progressBar.style.backgroundColor = `rgb(${red},${green},${blue})`;
+
+                // Atualizando a porcentagem
+                document.querySelector('.percentage').innerText = `${progress}%`;
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        // Ocultando a barra de progresso após o término do download
+                        progressContainer.style.display = 'none';
+                        alert('Download concluído!');
+                    }, 500);
+                }
+            }, 50);
+        }
+
+        function selectDirectory() {
+            // Lógica para definir o diretório padrão como a pasta de vídeos do sistema
+            let defaultDirectory = "Videos";
+
+            // Preencher automaticamente o campo de destino com o diretório padrão
+            document.getElementById("destination").value = defaultDirectory;
+        }
+    </script>
+
+    <!-- Bootstrap JS (opcional, se você precisar de funcionalidades específicas do Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofNBA/NhjOT+6a2dImdY80PmSUEauY6tw" crossorigin="anonymous"></script>
+</body>
+</html>
